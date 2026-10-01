@@ -25,20 +25,15 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Extract project
-        run: unzip -o OrderBook-Android.zip -d android-source
-
       - name: Test database
-        working-directory: android-source/OrderBook
         run: python3 tests/check_schema.py
 
       - name: Build APK
-        working-directory: android-source/OrderBook
         run: gradle :app:testDebugUnitTest :app:assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v6
         with:
           name: OrderBook-APK
-          path: android-source/OrderBook/app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
